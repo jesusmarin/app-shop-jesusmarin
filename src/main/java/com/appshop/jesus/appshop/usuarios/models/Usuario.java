@@ -1,21 +1,43 @@
-package usuarios.dtos;
+package com.appshop.jesus.appshop.usuarios.models;
+
+import jakarta.persistence.*;
 
 
-
-public class UsuarioDTO {
-
+@Entity
+@Table(name = "usuarios")
+public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private String password;
-    private String email;
-    private String nombre;
-    private String apellido;
-    private String direccion;
-    private String telefono;
-    private boolean enabled;
-    private Long fechaNacimiento;
 
-    public UsuarioDTO() {
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String nombre;
+
+    @Column(nullable = false)
+    private String apellido;
+
+    @Column(nullable = false)
+    private String direccion;
+
+    @Column(nullable = false)
+    private String telefono;
+
+    @Column(nullable = false)
+    private boolean enabled;
+
+    @Column(nullable = false)
+    private long fechaNacimiento;
+
+    public Usuario() {
     }
 
     public Long getId() {
@@ -90,11 +112,11 @@ public class UsuarioDTO {
         this.enabled = enabled;
     }
 
-    public Long getFechaNacimiento() {
+    public long getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Long fechaNacimiento) {
+    public void setFechaNacimiento(long fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 }

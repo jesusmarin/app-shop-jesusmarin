@@ -1,21 +1,17 @@
-package usuarios.services;
-import config.JwtUtil;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+package com.appshop.jesus.appshop.usuarios.services;
+/*import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import shared.exceptios.ResourceNotFoundException;
-import usuarios.dtos.UsuarioDTO;
-import usuarios.models.Usuario;
-import usuarios.repositories.UsuarioRepository;
-import org.springframework.stereotype.Service;
-import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;*/
 
-import java.util.ArrayList;
-import java.util.List;
+import com.appshop.jesus.appshop.shared.exceptios.ResourceNotFoundException;
+import com.appshop.jesus.appshop.usuarios.dtos.UsuarioDTO;
+import com.appshop.jesus.appshop.usuarios.models.Usuario;
+import com.appshop.jesus.appshop.usuarios.repositories.UsuarioRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
+
 import java.util.Optional;
 
 
@@ -24,27 +20,27 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final ModelMapper modelMapper;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+    //private final AuthenticationManager authenticationManager;
+    //private final JwtUtil jwtUtil;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper    ) {
         this.usuarioRepository = usuarioRepository;
         this.modelMapper = modelMapper;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
+       // this.authenticationManager = authenticationManager;
+       // this.jwtUtil = jwtUtil;
     }
 
     // ... (otros métodos)
 
     public String login(String username, String password) {
         try {
-            Authentication authentication = authenticationManager.authenticate(
+            /*Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            );*/
+           // SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            UserDetails userDetails = new User(username, password, List.of());
-            return jwtUtil.generateToken(userDetails);
+            //UserDetails userDetails = new User(username, password, List.of());
+            return "";// jwtUtil.generateToken(userDetails);
         } catch (Exception e) {
             return null;
         }
@@ -52,9 +48,9 @@ public class UsuarioService {
 
     public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) {
         Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
-        //usuario.setEnabled(true);
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(usuario.getPassword());
+        usuario.setEnabled(true);
+        //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = "";//passwordEncoder.encode(usuario.getPassword());
         usuario.setPassword(encodedPassword);
         usuario = usuarioRepository.save(usuario);
         return modelMapper.map(usuario, UsuarioDTO.class);

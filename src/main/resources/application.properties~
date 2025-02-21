@@ -1,17 +1,7 @@
-spring.application.name=com appshop jesus
-server.port=8080
-spring.datasource.url=jdbc:mysql://localhost:3306/appshop_jesus?createDatabaseIfNotExist=true
+spring.application.name=appshop jesus
+
+server.port=8085
+spring.datasource.url=jdbc:mysql://localhost:3306/appshopjesus
 spring.datasource.username=root
-spring.datasource.password=sasa
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
-
-spring.jpa.show-sql=true
+spring.datasource.password=root
 logging.level.org.hibernate.SQL=debug
-#spring.jpa.properties.hibernate.format_sql=true
-
-# Configuración JWT
-jwt.secret=TuClaveSecretaSuperSegura
-jwt.expiration=86400000 # 24 horas en milisegundos

@@ -1,10 +1,12 @@
 package usuarios.controllers;
 import usuarios.dtos.UsuarioDTO;
 import usuarios.services.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -16,9 +18,17 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<UsuarioDTO>> obtenerTodosLosUsuarios() {
+        List<UsuarioDTO> usuarios = usuarioService.obtenerTodosLosUsuarios();
+        return new ResponseEntity<>(usuarios, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<UsuarioDTO> crearUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        System.out.println("Usuario a crear: " + usuarioDTO.toString());
         UsuarioDTO usuarioCreado = usuarioService.crearUsuario(usuarioDTO);
+        System.out.println("Usuario creado: " + usuarioCreado.toString());
         return new ResponseEntity<>(usuarioCreado, HttpStatus.CREATED);
     }
 

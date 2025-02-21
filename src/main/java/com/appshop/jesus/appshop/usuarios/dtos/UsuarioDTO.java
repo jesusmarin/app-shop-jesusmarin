@@ -1,4 +1,4 @@
-package usuarios.dtos;
+package com.appshop.jesus.appshop.usuarios.dtos;
 
 
 

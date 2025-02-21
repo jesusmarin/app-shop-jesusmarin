@@ -1,14 +1,16 @@
-package usuarios.services;
+package com.appshop.jesus.appshop.usuarios.services;
 /*import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;*/
-import shared.exceptios.ResourceNotFoundException;
-import usuarios.dtos.UsuarioDTO;
-import usuarios.models.Usuario;
-import usuarios.repositories.UsuarioRepository;
-import org.springframework.stereotype.Service;
+
+import com.appshop.jesus.appshop.shared.exceptios.ResourceNotFoundException;
+import com.appshop.jesus.appshop.usuarios.dtos.UsuarioDTO;
+import com.appshop.jesus.appshop.usuarios.models.Usuario;
+import com.appshop.jesus.appshop.usuarios.repositories.UsuarioRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Optional;
