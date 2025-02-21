@@ -1,4 +1,0 @@
-package shared.exceptios;
-
-public class ResourceNotFoundException {
-}

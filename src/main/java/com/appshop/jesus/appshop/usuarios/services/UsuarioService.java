@@ -3,15 +3,22 @@ package com.appshop.jesus.appshop.usuarios.services;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;*/
-
-import com.appshop.jesus.appshop.shared.exceptios.ResourceNotFoundException;
+import com.appshop.jesus.appshop.config.JwtUtil;
+import com.appshop.jesus.appshop.shared.exceptions.ResourceNotFoundException;
 import com.appshop.jesus.appshop.usuarios.dtos.UsuarioDTO;
 import com.appshop.jesus.appshop.usuarios.models.Usuario;
 import com.appshop.jesus.appshop.usuarios.repositories.UsuarioRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,38 +29,37 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final ModelMapper modelMapper;
-    //private final AuthenticationManager authenticationManager;
-    //private final JwtUtil jwtUtil;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper    ) {
+    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.usuarioRepository = usuarioRepository;
         this.modelMapper = modelMapper;
-       // this.authenticationManager = authenticationManager;
-       // this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
-    // ... (otros métodos)
+
 
     public String login(String username, String password) {
         try {
-            /*Authentication authentication = authenticationManager.authenticate(
+            Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
-            );*/
-           // SecurityContextHolder.getContext().setAuthentication(authentication);
+            );
 
-            //UserDetails userDetails = new User(username, password, List.of());
-            return "";// jwtUtil.generateToken(userDetails);
+            UserDetails userDetails = new User(username, password, new ArrayList<>());
+            return jwtUtil.generateToken(userDetails);
         } catch (Exception e) {
+            System.err.println("Error durante la autenticación: " + e.getMessage()); // Imprime el mensaje de error
             return null;
         }
     }
 
     public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) {
         Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
-        usuario.setEnabled(true);
-        //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = "";//passwordEncoder.encode(usuario.getPassword());
-        usuario.setPassword(encodedPassword);
+        usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword())); // Cifra la contraseña
         usuario = usuarioRepository.save(usuario);
         return modelMapper.map(usuario, UsuarioDTO.class);
     }
@@ -68,7 +74,10 @@ public class UsuarioService {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
         if (usuarioOptional.isPresent()) {
             Usuario usuario = usuarioOptional.get();
-            modelMapper.map(usuarioDTO, usuario); // Mapea los datos del DTO a la entidad existente
+            modelMapper.map(usuarioDTO, usuario);
+            if (usuarioDTO.getPassword() != null && !usuarioDTO.getPassword().isEmpty()) {
+                usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword())); // Cifra la nueva contraseña
+            }
             usuario = usuarioRepository.save(usuario);
             return modelMapper.map(usuario, UsuarioDTO.class);
         }

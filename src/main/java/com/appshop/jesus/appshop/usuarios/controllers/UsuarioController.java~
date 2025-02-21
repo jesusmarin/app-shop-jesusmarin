@@ -56,7 +56,6 @@ public class UsuarioController {
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
 
         String token = usuarioService.login(username, password);
-        System.out.println("Token: " + token);
         if (token != null) {
             return ResponseEntity.ok(token);
         } else {
