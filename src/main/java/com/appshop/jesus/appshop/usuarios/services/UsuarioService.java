@@ -1,0 +1,88 @@
+package com.appshop.jesus.appshop.usuarios.services;
+import com.appshop.jesus.appshop.config.JwtUtil;
+import com.appshop.jesus.appshop.shared.exceptions.ResourceNotFoundException;
+import com.appshop.jesus.appshop.usuarios.dtos.UsuarioDTO;
+import com.appshop.jesus.appshop.usuarios.models.Usuario;
+import com.appshop.jesus.appshop.usuarios.repositories.UsuarioRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+
+@Service
+public class UsuarioService {
+
+    private final UsuarioRepository usuarioRepository;
+    private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    public UsuarioService(UsuarioRepository usuarioRepository, ModelMapper modelMapper, BCryptPasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.usuarioRepository = usuarioRepository;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
+
+
+
+    public String login(String username, String password) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+
+            UserDetails userDetails = new User(username, password, new ArrayList<>());
+            return jwtUtil.generateToken(userDetails);
+        } catch (Exception e) {
+            System.err.println("Error durante la autenticación: " + e.getMessage()); // Imprime el mensaje de error
+            return null;
+        }
+    }
+
+    public UsuarioDTO crearUsuario(UsuarioDTO usuarioDTO) {
+        Usuario usuario = modelMapper.map(usuarioDTO, Usuario.class);
+        usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword())); // Cifra la contraseña
+        usuario = usuarioRepository.save(usuario);
+        return modelMapper.map(usuario, UsuarioDTO.class);
+    }
+
+    public UsuarioDTO obtenerUsuarioPorId(Long id) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+        return usuarioOptional.map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + id));
+    }
+
+    public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            modelMapper.map(usuarioDTO, usuario);
+            if (usuarioDTO.getPassword() != null && !usuarioDTO.getPassword().isEmpty()) {
+                usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword())); // Cifra la nueva contraseña
+            }
+            usuario = usuarioRepository.save(usuario);
+            return modelMapper.map(usuario, UsuarioDTO.class);
+        }
+        throw new ResourceNotFoundException("Usuario no encontrado con id: " + id);
+    }
+    public List<UsuarioDTO> obtenerTodosLosUsuarios() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        return usuarios.stream()
+                .map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
+                .collect(Collectors.toList());
+    }
+}
