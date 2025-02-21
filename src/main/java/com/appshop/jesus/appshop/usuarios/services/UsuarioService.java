@@ -1,8 +1,4 @@
 package com.appshop.jesus.appshop.usuarios.services;
-/*import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;*/
 import com.appshop.jesus.appshop.config.JwtUtil;
 import com.appshop.jesus.appshop.shared.exceptions.ResourceNotFoundException;
 import com.appshop.jesus.appshop.usuarios.dtos.UsuarioDTO;

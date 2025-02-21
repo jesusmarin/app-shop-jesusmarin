@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Entity
 @Table(name = "items_carrito")
-@Data
 public class ItemCarrito {
 
     @Id

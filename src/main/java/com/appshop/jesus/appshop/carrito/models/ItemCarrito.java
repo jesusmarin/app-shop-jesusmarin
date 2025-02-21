@@ -3,7 +3,7 @@ package com.appshop.jesus.appshop.carrito.models;
 
 import com.appshop.jesus.appshop.productos.models.Producto;
 import jakarta.persistence.*;
-import lombok.Data;
+
 
 @Entity
 @Table(name = "items_carrito")

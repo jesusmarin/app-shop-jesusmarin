@@ -2,6 +2,8 @@ package com.appshop.jesus.appshop.usuarios.controllers;
 
 import com.appshop.jesus.appshop.usuarios.dtos.UsuarioDTO;
 import com.appshop.jesus.appshop.usuarios.services.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,5 +64,16 @@ public class UsuarioController {
         } else {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
+        // Invalida la sesión HTTP
+        request.getSession().invalidate();
+
+        // Elimina el token JWT del encabezado Authorization (opcional)
+        response.setHeader("Authorization", "");
+
+        return ResponseEntity.ok().build();
     }
 }
