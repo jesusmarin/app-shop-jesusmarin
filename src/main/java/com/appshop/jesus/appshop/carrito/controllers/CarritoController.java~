@@ -57,13 +57,4 @@ public class CarritoController {
         List<CarritoDTO> historico = carritoService.obtenerHistorialPedidos(username, estado);
         return new ResponseEntity<>(historico, HttpStatus.OK);
     }
-    @PostMapping("/{username}/finalizar")
-    public ResponseEntity<Void> finalizarCompra(@PathVariable String username) {
-        try {
-            carritoService.finalizarCompra(username);
-            return ResponseEntity.ok().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build(); // Devuelve un error 400 si hay un problema
-        }
-    }
 }

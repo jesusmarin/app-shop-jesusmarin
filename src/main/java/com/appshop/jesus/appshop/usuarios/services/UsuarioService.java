@@ -66,6 +66,12 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + id));
     }
 
+    public UsuarioDTO obtenerUsuarioPorUsername(String id) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByUsername(id);
+        return usuarioOptional.map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + id));
+    }
+
     public UsuarioDTO actualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
         if (usuarioOptional.isPresent()) {
