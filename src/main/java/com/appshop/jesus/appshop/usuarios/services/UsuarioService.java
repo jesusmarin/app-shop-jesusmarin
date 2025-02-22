@@ -91,4 +91,7 @@ public class UsuarioService {
                 .map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
                 .collect(Collectors.toList());
     }
+    public Long obtenerUltimoId() {
+        return usuarioRepository.findMaxId();
+    }
 }

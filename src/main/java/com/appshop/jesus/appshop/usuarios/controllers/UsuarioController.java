@@ -1,6 +1,7 @@
 package com.appshop.jesus.appshop.usuarios.controllers;
 
 import com.appshop.jesus.appshop.usuarios.dtos.UsuarioDTO;
+import com.appshop.jesus.appshop.usuarios.models.Usuario;
 import com.appshop.jesus.appshop.usuarios.services.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -84,5 +85,11 @@ public class UsuarioController {
         response.setHeader("Authorization", "");
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/getId")
+    public long registrarUsuario(@RequestBody Usuario usuario) {
+        long idUsuario = usuarioService.obtenerUltimoId();
+        return idUsuario;
     }
 }

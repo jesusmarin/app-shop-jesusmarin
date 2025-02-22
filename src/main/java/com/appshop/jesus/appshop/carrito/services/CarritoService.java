@@ -52,6 +52,7 @@ public class CarritoService {
             nuevoCarrito.setUsuario(usuario);
             nuevoCarrito.setFecha(System.currentTimeMillis());
             nuevoCarrito.setIdOrden(UUID.randomUUID().toString());
+            nuevoCarrito.setEstado(EstadoCarrito.ACTIVO);
             return carritoRepository.save(nuevoCarrito);
         });
         if(carrito.getFecha() <= 0) {
@@ -86,6 +87,7 @@ public class CarritoService {
         }
 
         double totalCarrito = carrito.getItems().stream().mapToDouble(item -> item.getProducto().getPrecio() * item.getCantidad()).sum();
+        carrito.setEstado(EstadoCarrito.ACTIVO);
         carrito.setValor(totalCarrito);
         carritoRepository.save(carrito);
 

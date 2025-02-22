@@ -52,6 +52,7 @@ public class CarritoService {
             nuevoCarrito.setUsuario(usuario);
             nuevoCarrito.setFecha(System.currentTimeMillis());
             nuevoCarrito.setIdOrden(UUID.randomUUID().toString());
+            nuevoCarrito.setEstado(EstadoCarrito.ACTIVO);
             return carritoRepository.save(nuevoCarrito);
         });
         if(carrito.getFecha() <= 0) {
@@ -178,6 +179,6 @@ public class CarritoService {
         carrito.setFecha(System.currentTimeMillis()); // Establece la fecha de compra
         carritoRepository.save(carrito);
 
-        
+
     }
 }
