@@ -55,9 +55,9 @@ public class UsuarioController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> actualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
-        UsuarioDTO usuarioActualizado = usuarioService.actualizarUsuario(id, usuarioDTO);
+    @PutMapping("/{username}")
+    public ResponseEntity<UsuarioDTO> actualizarUsuario(@PathVariable String username, @RequestBody UsuarioDTO usuarioDTO) {
+        UsuarioDTO usuarioActualizado = usuarioService.actualizarUsuario(username, usuarioDTO);
         if (usuarioActualizado != null) {
             return new ResponseEntity<>(usuarioActualizado, HttpStatus.OK);
         }
