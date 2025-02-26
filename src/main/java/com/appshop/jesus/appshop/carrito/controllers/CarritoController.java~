@@ -56,17 +56,13 @@ public class CarritoController {
         return new ResponseEntity<>(carrito, HttpStatus.OK);
     }
 
-    @GetMapping("/{username}/historial")
-    public ResponseEntity<List<CarritoDTO>> obtenerHistorialPedidos(@PathVariable String username, @RequestParam(required = false) String estado) {
-        EstadoCarrito estadoCarrito = EstadoCarrito.ACTIVO;
-        if(estado != null) {
-            estadoCarrito =  EstadoCarrito.fromString(estado);
-        }
-        List<CarritoDTO> historico = carritoService.obtenerHistorialPedidos(username, estadoCarrito);
+    /*@GetMapping("/{username}/historial_")
+    public ResponseEntity<List<CarritoDTO>> obtenerHistorialPedidos_(@PathVariable String username, @RequestParam(required = false) EstadoCarrito estado) {
+        List<CarritoDTO> historico = carritoService.obtenerHistorialPedidos(username, estado);
         return new ResponseEntity<>(historico, HttpStatus.OK);
     }
 
-   /* @GetMapping("/{username}/historial")
+    @GetMapping("/{username}/historial")
     public ResponseEntity<List<CarritoDTO>> obtenerHistorialPedidos__(
             @PathVariable String username, HttpServletRequest request, @RequestParam(required = false) EstadoCarrito estado) {
         try {
@@ -82,7 +78,7 @@ public class CarritoController {
         } catch (Exception e) {
             return ResponseEntity.status(401).build(); // No autorizado o token inválido
         }
-    }
+    }*/
 
     @GetMapping("/{username}/historial")
     public ResponseEntity<List<CarritoDTO>> obtenerHistorialCompras(
@@ -106,7 +102,7 @@ public class CarritoController {
         } catch (Exception e) {
             return ResponseEntity.status(401).build(); // No autorizado o token inválido
         }
-    }*/
+    }
 
     private String extractToken(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");

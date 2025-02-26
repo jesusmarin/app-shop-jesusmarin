@@ -1,9 +1,10 @@
 package com.appshop.jesus.appshop.usuarios.repositories;
 
 
+import com.appshop.jesus.appshop.usuarios.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import usuarios.models.Usuario;
+
 
 import java.util.Optional;
 

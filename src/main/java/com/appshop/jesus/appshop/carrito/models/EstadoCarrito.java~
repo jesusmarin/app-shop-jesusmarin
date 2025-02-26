@@ -1,9 +1,9 @@
 package com.appshop.jesus.appshop.carrito.models;
 
 public enum EstadoCarrito {
-    ACTIVO("ACTIVO"),
-    COMPRADO("COMPRADO"),
-    CANCELADO("CANCELADO");
+    ACTIVO,
+    COMPRADO,
+    CANCELADO
 
     private final String estado;
 

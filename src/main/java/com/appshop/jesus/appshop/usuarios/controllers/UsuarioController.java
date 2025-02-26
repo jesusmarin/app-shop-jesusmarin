@@ -1,6 +1,7 @@
 package com.appshop.jesus.appshop.usuarios.controllers;
 
 import com.appshop.jesus.appshop.usuarios.dtos.UsuarioDTO;
+import com.appshop.jesus.appshop.usuarios.models.Usuario;
 import com.appshop.jesus.appshop.usuarios.services.UsuarioService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,10 +45,19 @@ public class UsuarioController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    @GetMapping("/u/{username}")
+    public ResponseEntity<UsuarioDTO> obtenerUsuarioPorUsername(@PathVariable String username) {
+        System.out.println("Usuario username: " + username);
+        UsuarioDTO usuario = usuarioService.obtenerUsuarioPorUsername(username);
+        if (usuario != null) {
+            return new ResponseEntity<>(usuario, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> actualizarUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
-        UsuarioDTO usuarioActualizado = usuarioService.actualizarUsuario(id, usuarioDTO);
+    @PutMapping("/{username}")
+    public ResponseEntity<UsuarioDTO> actualizarUsuario(@PathVariable String username, @RequestBody UsuarioDTO usuarioDTO) {
+        UsuarioDTO usuarioActualizado = usuarioService.actualizarUsuario(username, usuarioDTO);
         if (usuarioActualizado != null) {
             return new ResponseEntity<>(usuarioActualizado, HttpStatus.OK);
         }
@@ -75,5 +85,11 @@ public class UsuarioController {
         response.setHeader("Authorization", "");
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/getId")
+    public long registrarUsuario(@RequestBody Usuario usuario) {
+        long idUsuario = usuarioService.obtenerUltimoId();
+        return idUsuario;
     }
 }

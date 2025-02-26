@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -45,5 +47,18 @@ public class SecurityConfig {
                 .and()
                 .authenticationProvider(authenticationProvider());
         return http.build();
+    }
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**") // Permite CORS para todas las rutas
+                        .allowedOrigins("http://localhost:3000") // Permite peticiones desde este origen
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Permite estos métodos HTTP
+                        .allowedHeaders("*") // Permite todos los encabezados
+                        .allowCredentials(true); // Permite el envío de cookies y encabezados de autorización
+            }
+        };
     }
 }

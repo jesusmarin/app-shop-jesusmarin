@@ -18,5 +18,4 @@ public interface CarritoRepository extends JpaRepository<Carrito, Long> {
     Optional<Carrito> findFirstByUsuarioAndEstado(Usuario usuario, EstadoCarrito estado);
 
     List<Carrito> findByUsuarioAndEstado(Usuario usuario, EstadoCarrito estado);
-    Optional<Carrito> findFirstByUsuarioId(long id);
 }

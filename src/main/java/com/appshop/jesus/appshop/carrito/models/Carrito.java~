@@ -11,7 +11,7 @@ import java.util.List;
 public class Carrito {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @OneToOne
@@ -24,12 +24,22 @@ public class Carrito {
     @Enumerated(EnumType.STRING)
     private EstadoCarrito estado;
 
-
+    @Column(name = "id_orden")
     private String idOrden; // ID de la orden generada al completar la compra
+    @Column(name = "fecha")
     private long fecha; // Fecha y hora de la compra
+    @Column(name = "valor")
     private double valor; // Valor total de la compra
 
     public Carrito() {
+    }
+
+    public EstadoCarrito getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoCarrito estado) {
+        this.estado = estado;
     }
 
     public Long getId() {
